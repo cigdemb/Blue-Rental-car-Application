@@ -11,7 +11,24 @@ provider "aws" {
   region = var.region
 }
 
+data "aws_ami" "al2023" {
+  most_recent      = true
+  owners           = ["amazon"]
 
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name = "architecture"
+    values = ["x86_64"]
+  }
+  filter {
+    name = "name"
+    values = ["al2023-ami-2023*"]
+  }
+}
 resource "aws_instance" "devops_project_instance" {
   ami= terraform.workspace != "default" ? lookup(var.myami, terraform.workspace) : data.aws_ami.al2023.id
   instance_type = var.ec2_type
