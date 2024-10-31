@@ -13,6 +13,12 @@ pipeline {
     }
 
     stages {
+	stage('Verify Repository Content') {
+            steps {
+                echo "Current directory contents:"
+                sh 'ls -R'  // List all files and directories
+            }
+        }
         stage('Create Key Pair for AWS instance') {
             steps {
                 echo "Creating Key Pair "
